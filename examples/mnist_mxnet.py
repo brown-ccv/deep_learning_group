@@ -63,6 +63,27 @@ def mlp_leaky_relu_generator():
     out  = mx.sym.SoftmaxOutput(data=fc3, name='softmax')
     return out
 
+def mlp_batch_norm_generator():
+    # Create a place holder variable for the input data
+    data = mx.sym.Variable('data')
+    # Flatten the data from 4-D shape (batch_size, num_channel, width, height)
+    # into 2-D (batch_size, num_channel*width*height)
+    data = mx.sym.Flatten(data=data)
+
+    # The first fully-connected layer
+    fc1  = mx.sym.FullyConnected(data=data, name='fc1', num_hidden=128)
+    norm1 = mx.sym.BatchNorm(fc1, fix_gamma=False)
+    act1 = mx.sym.LeakyReLU(data=norm1, name='relu1', act_type="leaky")
+
+    # The second fully-connected layer and the according activation function
+    fc2  = mx.sym.FullyConnected(data=act1, name='fc2', num_hidden = 64)
+    norm2 = mx.sym.BatchNorm(fc2, fix_gamma=False)
+    act2 = mx.sym.LeakyReLU(data=norm2, name='relu2', act_type="leaky")
+
+    # The thrid fully-connected layer, note that the hidden size should be 10, which is the number of unique digits
+    fc3  = mx.sym.FullyConnected(data=act2, name='fc3', num_hidden=10)
+    out  = mx.sym.SoftmaxOutput(data=fc3, name='softmax')
+    return out
 
 path='/home/ec2-user/MNIST_data/'
 (train_lbl, train_img) = read_data(
@@ -90,8 +111,6 @@ mlp_model.fit(
     eval_data=val_iter, # validation data
     batch_end_callback = mx.callback.Speedometer(batch_size, 200) # output progress for each 200 data batches
 )
-prob = mlp_model.predict(val_img[0:1].astype(np.float32)/255)[0]
-print 'MLP-Relu as %d with probability %f' % (prob.argmax(), max(prob))
 
 # -----------LEAKY -------------------
 mlp_leaky = mlp_leaky_relu_generator()
@@ -106,5 +125,28 @@ mlp_leaky_model.fit(
     eval_data=val_iter, # validation data
     batch_end_callback = mx.callback.Speedometer(batch_size, 200) # output progress for each 200 data batches
 )
-prob = mlp_leaky_model.predict(val_img[0:1].astype(np.float32)/255)[0]
-print 'MLP-Leaky-Relu as %d with probability %f' % (prob.argmax(), max(prob))
+
+# ----------- BATCH NORM --------------------
+mlp_norm = mlp_batch_norm_generator()
+mlp_norm_model = mx.model.FeedForward(
+    symbol = mlp_norm,       # network structure
+    num_epoch = 10,     # number of data passes for training
+    learning_rate = 0.1, # learning rate of SGD
+    ctx = devices
+)
+mlp_norm_model.fit(
+    X=train_iter,       # training data
+    eval_data=val_iter, # validation data
+    batch_end_callback = mx.callback.Speedometer(batch_size, 200) # output progress for each 200 data batches
+)
+
+# --------- validate model accuracy with test-data iterator
+
+mlp_acc = mlp_model.score(val_iter)
+print 'Validation accuracy: %f%%' % (mlp_acc *100,)
+
+mlp_leaky_acc = mlp_leaky_model.score(val_iter)
+print 'Validation accuracy: %f%%' % (mlp_leaky_acc *100,)
+
+mlp_norm_acc = mlp_norm_model.score(val_iter)
+print 'Validation accuracy: %f%%' % (mlp_leaky_acc *100,)
