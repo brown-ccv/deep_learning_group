@@ -3,7 +3,7 @@
 This instructions are only for people with a CIS-aws account
 
 1. Install AWS Command Line Interface.
-  (a.) pip install awscli
+  (a.) `pip install awscli`
     Note: might need `--ignore-installed six` flag for El Capitan
 
 2. Configure AWS Command Line Interface
@@ -19,7 +19,7 @@ This instructions are only for people with a CIS-aws account
       i. you'll be prompted to enter: Access Key ID, Secret Access Key, default region (us-east-1), and default output format (I suggest json or text)
 
 3. Launch EC2 Instance with shell script
-  (a.) bash aws_p2_init.sh
+  (a.) bash aws_instance_init.sh
 
 4. Stop (and/or Terminate) an instance:
   (a.) bash stop_instance.sh
