@@ -1,0 +1,3 @@
+#!/bin/bash
+aws ec2 stop-instances --instance-ids i-0c0f5839b3eafb450 1>/dev/null
+echo Stoping instance...
