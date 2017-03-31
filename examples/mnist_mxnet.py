@@ -143,10 +143,10 @@ mlp_norm_model.fit(
 # --------- validate model accuracy with test-data iterator
 
 mlp_acc = mlp_model.score(val_iter)
-print 'Validation accuracy: %f%%' % (mlp_acc *100,)
+print 'Validation accuracy ReLU: %f%%' % (mlp_acc *100,)
 
 mlp_leaky_acc = mlp_leaky_model.score(val_iter)
-print 'Validation accuracy: %f%%' % (mlp_leaky_acc *100,)
+print 'Validation accuracy for LeakyReLU: %f%%' % (mlp_leaky_acc *100,)
 
 mlp_norm_acc = mlp_norm_model.score(val_iter)
-print 'Validation accuracy: %f%%' % (mlp_leaky_acc *100,)
+print 'Validation accuracy ReLu + BatchNorm: %f%%' % (mlp_norm_acc *100,)
