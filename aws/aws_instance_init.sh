@@ -17,7 +17,7 @@ if [ -z "$(aws configure get aws_access_key_id)" ]; then
 fi
 
 # get the correct ami
-export ami="ami-0ad3791c" 					# AWS Deep Learning AMI w/ MXNet, TF, Caffe, Torch
+export ami="ami-51ab2947" 					# AWS Deep Learning AMI w/ MXNet, TF, Caffe, Torch
 
 # select our virtual private cloud
 export vpcId='vpc-948c14f2'
