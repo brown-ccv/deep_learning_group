@@ -3,13 +3,14 @@ from __future__ import print_function
 # Import MINST data
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
+from time import time
 
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 
 # Parameters
 learning_rate = 0.001
 training_epochs = 30
-batch_size = 100
+batch_size = 128
 display_step = 1
 
 # Network Parameters
@@ -58,6 +59,7 @@ init = tf.global_variables_initializer()
 
 
 # Launch the graph
+t0 = time()
 with tf.Session() as sess:
     sess.run(init)
 
@@ -84,3 +86,5 @@ with tf.Session() as sess:
     # Calculate accuracy
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
     print("Accuracy:", accuracy.eval({x: mnist.test.images, y: mnist.test.labels}))
+
+print("Run time:", time() - t0)
