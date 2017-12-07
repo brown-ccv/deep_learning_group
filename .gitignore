@@ -1,4 +1,4 @@
-.*ftpconfig
+*.ftpconfig
 aws/restart_instance.sh
 aws/stop_instance.sh
 aws/terminate_instance.sh
