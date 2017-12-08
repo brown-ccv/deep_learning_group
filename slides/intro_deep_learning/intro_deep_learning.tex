@@ -224,7 +224,7 @@
 
 
 
-\section{Convolutional Neural Network}
+\section{CNNs}
 	\subsection{Convolutional Neural Network (CNNs)}
 	\begin{frame}{Convolutional Neural Networks}
 	\begin{columns}
@@ -592,14 +592,14 @@
 	
 	
 	
-\section{Recurrent Neural Network}
+\section{RNNs}
 
 \subsection{RNNs}
 
 	\begin{frame}{Recurrent Neural Networks (RNNs)}
 	
 	\begin{center}
-		RNNs are a type of neural network that share parameters across time. They are used frequently for natural language processing.
+		RNNs are a type of neural network that share parameters across time. They are used frequently for natural language processing (NLP) and time series data.
 	\end{center}
 	\end{frame}
 
@@ -868,80 +868,6 @@
 		\end{frame}
 
 
-\begin{frame}{Sparse Autoencoder}
-		\begin{enumerate}
-			\item Different approach to ``compressing'' representation 
-			\item Hidden layer has more units than input (i.e., over-complete)
-			\item Compression is therefore achieved through sparsity
-		\end{enumerate}
-		\end{frame}
-		
-		
-		\begin{frame}{Sparse Autoencoder cont.}
-		\begin{enumerate}
-			\item Several methods of introducing sparsity, we'll discuss 2
-			\begin{enumerate}
-				\item \textit{k}-sparse autoencoders (Makhzani et al., 2013)
-				\item Constrained activation
-			\end{enumerate}
-		\end{enumerate}
-		\end{frame}
-		
-\subsection{k-Sparse Autoencoder}
-		\begin{frame}{\textit{k}-sparse Autoencoder}
-		\begin{enumerate}
-			\item Select \textit{k} highest-activation units
-			\item Set others to $0$
-			\item Compression is achieved through sparsity of model, not reduced dimensionality
-		\end{enumerate}
-		\end{frame}
-
-
-		\begin{frame}{\textit{k}-sparse Autoencoder}
-		\begin{figure}
-			\includegraphics[scale = 0.20]{/Users/pstey/projects_code/deep_learning_group/slides/intro_deep_learning/images/sparse_autoencoder.png}
-		\end{figure}	
-		\end{frame}
-		
-\subsection{Sparsity Constrained Autoencoder}	
-		\begin{frame}{Sparsity Constraint}
-		\begin{enumerate}
-			\item With sigmoidal activation function,  $\sigma_j(x) \in [0, 1]$
-			\item We want to constrain them to be mostly $0$ 	
-			\item Take mean activation
-			$$ \hat{\rho}_j = \frac{1}{n} \sum_{i = 1}^{n} \left[\sigma_j\left(x_i\right)\right] $$
-			such that 
-			$$\hat{\rho}_j = \rho$$
-			where $\rho$ is a hyperparameter set near $0$, commonly $0.05$.
-		\end{enumerate}
-		\end{frame}
-		
-		
-		\begin{frame}{Sparsity Constraint cont.}
-		\begin{enumerate}
-			\item Add penalty term to loss function to achieve this sparsity constraint	
-			$$ \sum_{j= 1}^{m} \rho \text{log} \frac{\rho}{\hat{\rho}_j} + (1 - \rho) \text{log} \frac{1 - \rho}{1 - \hat{\rho}_j} $$
-			
-			\item This is based on Kullback-Leibler Divergence, and often written as
-			$$  \sum_{j= 1}^{m} \text{KL} \left(\rho || \hat{\rho}_j \right)   $$
-		
-		\end{enumerate}
-		\end{frame}
-		
-		
-		\begin{frame}{Sparsity Constraint cont.}
-		\begin{enumerate}
-			\item Penalty term has the property that $ \text{KL} \left(\rho || \hat{\rho}_j \right) = 0$ when $\hat{\rho}_j = \rho$
-			\item Otherwise, monotone increasing as 	$\hat{\rho}_j$ diverges from $\rho$ 
-			\item So our loss function is now
-			$$ L_{\text{sparse}}(x, \hat{x}) = L(x, \hat{x}) + \lambda  \sum_{j= 1}^{m} \text{KL} \left(\rho || \hat{\rho}_j \right)  $$
-			
-			where $L(x, \hat{x})$ is our unconstrained loss function and $\lambda$  controls the weight of sparsity penalty.
-		\end{enumerate}
-		\end{frame}
-		
-
-
 \subsection{Denoising Autoencoder}
 			\begin{frame}{Denoising Autoencoder}
 			\begin{enumerate}
@@ -1037,10 +963,24 @@
 		In the case of (1.) and (2.), a traditional statistical model is better. In the case of (3.), using some ensemble-of-trees method will give as-good or better results with minimal tuning.
 	\end{frame}
 
-	\begin{frame}{Sources}
-	http://cs231n.github.io/convolutional-networks/
-	https://colah.github.io/posts/2015-08-Understanding-LSTMs/
-	Slides from Yinong Wang (2016)
+
+\begin{frame}{Sources}
+
+	\begin{enumerate}[1]
+	\item http://cs231n.github.io/convolutional-networks/
+	\item https://colah.github.io/posts/2015-08-Understanding-LSTMs/
+	\item Slides from Yinong Wang (2016): https://github.com/brown-data-science/deep\_learning\_group/blob/master/slides/recurrent\_neural\_networks.pdf
 	
+	\item Vincent P., Larochelle, H., Bengio Y., Manzagol P.A. (2008) \textit{Extracting and Composing Robust Features with
+Denoising Autoencoders}.
+	
+	\item Vincent P., Larochelle, H., LaJoie I., Bengio Y., Manzagol P.A. (2010) \textit{Stacked Denoising Autoencoders: Learning Useful Representations in a Deep Network with a Local Denoising Criterion}
+	
+	\item Makhzani A., Frey B. (2015) \textit{Winner-Take-All Autoencoders}
+	
+	\item Ng A. \textit{Sparse Autoencoders} CS294A Lecture notes
+	\end{enumerate}
+	
+
 	\end{frame}
 \end{document}
